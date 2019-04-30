@@ -1,26 +1,72 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Switch } from 'react-router-dom'
+import "bootstrap/dist/css/bootstrap.min.css"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import PrivateRoute from './components/PrivateRoute'
+import PublicRoute from './components/PublicRoute'
+
+/*
+    Route Components
+*/
+
+import Home from './views/Home'
+
+import AnunciosPorCategoria from './views/anuncios/AnunciosPorCategoria'
+import CrearAnuncio from './views/anuncios/CrearAnuncio'
+import DetalleAnuncio from './views/anuncios/DetalleAnuncio'
+
+import MisAnuncios from './views/perfil/MisAnuncios'
+import Favoritos from './views/perfil/Favoritos'
+
+import Signup from './views/auth/Signup'
+import Login from './views/auth/Login'
+
+/*
+    - Route Components
+*/
+
+class App extends Component {
+    render () {
+        return (
+            <Router>
+                <Switch>
+                    <PrivateRoute
+                        exact
+                        path="/"
+                        component={ Home }
+                    />
+                    <PrivateRoute
+                        path="/anuncios"
+                        component={ AnunciosPorCategoria }
+                    />
+                    <PrivateRoute
+                        path="/crearAnuncio"
+                        component={ CrearAnuncio }
+                    />
+                    <PrivateRoute
+                        path="/anuncio/:id"
+                        component={ DetalleAnuncio }
+                    />
+                    <PrivateRoute
+                        path="/misAnuncios"
+                        component={ MisAnuncios }
+                    />
+                    <PrivateRoute
+                        path="/misFavoritos"
+                        component={ Favoritos }
+                    />
+                    <PublicRoute
+                        path="/login"
+                        component={ Login }
+                    />
+                    <PublicRoute
+                        path="/signup"
+                        component={ Signup }
+                    />
+                </Switch>
+            </Router>
+        )
+    }
 }
 
 export default App;
