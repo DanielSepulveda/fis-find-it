@@ -37,7 +37,14 @@ class CardAnuncio extends Component {
     static propTypes = {
         anuncio     : PropTypes.object.isRequired,
         isFavorite  : PropTypes.bool.isRequired,
-        classes     : PropTypes.object.isRequired
+        classes     : PropTypes.object.isRequired,
+        chat        : PropTypes.bool,
+        chatId      : PropTypes.string
+    }
+
+    static defaultProps = {
+        chat    : false,
+        chatId  : ''
     }
 
     _handleClickFavorite = () => {
@@ -67,7 +74,9 @@ class CardAnuncio extends Component {
                     price
                 },
                 isFavorite,
-                classes
+                classes,
+                chat,
+                chatId
             },
             _handleClickFavorite
         } = this
@@ -81,23 +90,37 @@ class CardAnuncio extends Component {
                     <Card.Title>{ title }</Card.Title>
                     <h4 className="card-text text-success mb-3"> { numeral(price).format('$0,0') } </h4>
                     <ButtonsWrapper>
-                        <Link
-                            to={ `/anuncio/${id}` }
-                        >
-                            <Button
-                                variant="primary"
+                        { !chat ? (
+                            <Link
+                                to={ `/anuncio/${id}` }
                             >
-                                Detalle
-                            </Button>
-                        </Link>
-                        <IconButton
-                            className={ classnames({
-                                [classes.fav]: isFavorite
-                            }) }
-                            onClick={ _handleClickFavorite }
-                        >
-                            <FavoriteIcon />
-                        </IconButton>
+                                <Button
+                                    variant="primary"
+                                >
+                                    Detalle
+                                </Button>
+                            </Link>
+                        ) : (
+                            <Link
+                                to={ `/chat/${chatId}` }
+                            >
+                                <Button
+                                    variant="primary"
+                                >
+                                    Ver Chat
+                                </Button>
+                            </Link>
+                        ) }
+                        { !chat && (
+                            <IconButton
+                                className={ classnames({
+                                    [classes.fav]: isFavorite
+                                }) }
+                                onClick={ _handleClickFavorite }
+                            >
+                                <FavoriteIcon />
+                            </IconButton>
+                        ) }
                     </ButtonsWrapper>
                 </Card.Body>
             </Card>

@@ -7,30 +7,30 @@ import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
 
-import Main from './layouts/Main'
-import CardAnuncio from '../components/CardAnuncio'
+import Main from '../layouts/Main'
+import CardAnuncio from '../../components/CardAnuncio'
 
-class Home extends Component {
+class Chats extends Component {
     static propTypes = {
-        anuncios: PropTypes.array
+        chats: PropTypes.array
     }
 
     static defaultProps = {
-        anuncios: []
+        chats: []
     }
 
     render () {
         const {
-            anuncios
+            chats
         } = this.props
 
         return (
             <Main>
                 <div className="py-3">
-                    <h1 className="display-3 text-center mb-5"> Find It </h1>
+                    <h1 className="display-3 text-center mb-5"> Mis Mensajes </h1>
                     <Container>
                         <Row>
-                            { anuncios.map(anuncio => (
+                            { chats.map(({ anuncio, chatId }) => (
                                 <Col
                                     key={ anuncio.id }
                                     sm="12"
@@ -39,6 +39,8 @@ class Home extends Component {
                                 >
                                     <CardAnuncio
                                         anuncio={ anuncio }
+                                        chatId={ chatId }
+                                        chat
                                     />
                                 </Col>
                             )) }
@@ -51,9 +53,8 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state) => {
-    // console.log(state)
     return {
-        anuncios: state.firestore.ordered.anuncios
+        chats: state.firebase.profile.chats || []
     }
 }
 
@@ -62,4 +63,4 @@ export default compose(
     firestoreConnect([
         { collection: 'anuncios' }
     ])
-)(Home)
+)(Chats)

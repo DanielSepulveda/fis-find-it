@@ -17,6 +17,8 @@ import DetalleAnuncio from './views/anuncios/DetalleAnuncio'
 
 import MisAnuncios from './views/perfil/MisAnuncios'
 import Favoritos from './views/perfil/Favoritos'
+import Chats from './views/perfil/Chats'
+import Chat from './views/perfil/Chat'
 
 import Signup from './views/auth/Signup'
 import Login from './views/auth/Login'
@@ -54,6 +56,14 @@ class App extends Component {
                     <PrivateRoute
                         path="/misFavoritos"
                         component={ Favoritos }
+                    />
+                    <PrivateRoute
+                        path="/misChats"
+                        component={ Chats }
+                    />
+                    <PrivateRoute
+                        path="/chat/:id"
+                        component={ Chat }
                     />
                     <PublicRoute
                         path="/login"

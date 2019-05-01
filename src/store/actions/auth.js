@@ -51,7 +51,8 @@ export const signUp = (payload) => {
             return firestore.collection('users').doc(user.uid).set({
                 name        : payload.name,
                 anuncios    : [],
-                favorites   : {}
+                favorites   : {},
+                chats       : []
             })
         }).then(() => {
             dispatch({

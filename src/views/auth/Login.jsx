@@ -38,11 +38,10 @@ const FormWrapper = styled.div`
 class Login extends Component {
     _handleSubmit = (values, formik) => {
         const {
-            logIn,
-            history
+            logIn
         } = this.props
 
-        if (!/^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(itesm)\.com$/.test(values.email)) {
+        if (!/^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(itesm)\.?(com|mx)$/.test(values.email)) {
             formik.setFieldError('email', 'Favor de ingresar un correo del ITESM')
         }
 

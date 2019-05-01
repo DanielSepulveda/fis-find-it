@@ -134,6 +134,14 @@ class AppNavbar extends Component {
                                     Mis Favoritos
                                 </NavButton>
                             </Link>
+                            <Link
+                                to="/misChats"
+                                className="mt-1"
+                            >
+                                <NavButton>
+                                    Mis Chats
+                                </NavButton>
+                            </Link>
                             <NavButton
                                 className="mt-3"
                                 onClick={ _handleLogOut }
@@ -171,6 +179,13 @@ class AppNavbar extends Component {
                             >
                                 <MenuItem>
                                     Mis Favoritos
+                                </MenuItem>
+                            </Link>
+                            <Link
+                                to="/misChats"
+                            >
+                                <MenuItem>
+                                    Mis Chats
                                 </MenuItem>
                             </Link>
                         ))}

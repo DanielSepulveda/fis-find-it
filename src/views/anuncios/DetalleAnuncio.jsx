@@ -16,6 +16,7 @@ import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
 
 import Main from '../layouts/Main'
+import { crearChatMensaje } from '../../store/actions/mensajes'
 
 const Layout = styled.div`
     display: flex;
@@ -45,7 +46,33 @@ class DetalleAnuncio extends Component {
     }
 
     _handleSubmit = values => {
-        console.log(values)
+        const {
+            anuncio,
+            currentUser: {
+                id,
+                name
+            },
+            crearChatMensaje,
+            match
+        } = this.props
+
+        const a = {
+            ...anuncio,
+            id: match.params.id
+        }
+
+
+        const payload = {
+            anuncio: a,
+            currentUser: {
+                id,
+                name
+            },
+            content: values
+        }
+
+        crearChatMensaje(payload)
+
     }
 
     _handleGoBack = () => {
@@ -59,7 +86,9 @@ class DetalleAnuncio extends Component {
     render () {
         const {
             props: {
-                anuncio
+                anuncio,
+                miAnuncio,
+                hasChat
             },
             _handleGoBack,
             _handleSubmit
@@ -100,54 +129,58 @@ class DetalleAnuncio extends Component {
                                             <p>
                                                 { anuncio.desc }
                                             </p>
-                                            <h4 className="mb-3"> Enviar Mensaje </h4>
-                                            <Formik
-                                                validationSchema={ schema }
-                                                // validateOnChange={ false }
-                                                onSubmit={ _handleSubmit }
-                                                validateOnChange={ false }
-                                                initialValues={{
-                                                    message: '',
-                                                }}
-                                            >
-                                                { ({
-                                                    handleSubmit,
-                                                    handleChange,
-                                                    values,
-                                                    touched,
-                                                    errors
-                                                }) => (
-                                                    <Form
-                                                        noValidate
-                                                        onSubmit={ handleSubmit }
+                                            { (!miAnuncio && !hasChat) && (
+                                                <>
+                                                    <h4 className="mb-3"> Enviar Mensaje </h4>
+                                                    <Formik
+                                                        validationSchema={ schema }
+                                                        // validateOnChange={ false }
+                                                        onSubmit={ _handleSubmit }
+                                                        validateOnChange={ false }
+                                                        initialValues={{
+                                                            message: '',
+                                                        }}
                                                     >
-                                                        <Form.Group
-                                                            controlId="formMessage"
-                                                        >
-                                                            <Form.Control
-                                                                as="textarea"
-                                                                name="message"
-                                                                value={ values.message }
-                                                                onChange={ handleChange }
-                                                                isValid={ touched.message && !errors.message }
-                                                                isInvalid={ !!errors.message }
-                                                                placeholder="Mensaje"
-                                                            />
-                                                            <Form.Control.Feedback type="invalid">
-                                                                { errors.message }
-                                                            </Form.Control.Feedback>
-                                                        </Form.Group>
-                                                        <Form.Group>
-                                                            <BButton
-                                                                variant="primary"
-                                                                onClick={ handleSubmit }
+                                                        { ({
+                                                            handleSubmit,
+                                                            handleChange,
+                                                            values,
+                                                            touched,
+                                                            errors
+                                                        }) => (
+                                                            <Form
+                                                                noValidate
+                                                                onSubmit={ handleSubmit }
                                                             >
-                                                                Enviar
-                                                            </BButton>
-                                                        </Form.Group>
-                                                    </Form>
-                                                ) }
-                                            </Formik>
+                                                                <Form.Group
+                                                                    controlId="formMessage"
+                                                                >
+                                                                    <Form.Control
+                                                                        as="textarea"
+                                                                        name="message"
+                                                                        value={ values.message }
+                                                                        onChange={ handleChange }
+                                                                        isValid={ touched.message && !errors.message }
+                                                                        isInvalid={ !!errors.message }
+                                                                        placeholder="Mensaje"
+                                                                    />
+                                                                    <Form.Control.Feedback type="invalid">
+                                                                        { errors.message }
+                                                                    </Form.Control.Feedback>
+                                                                </Form.Group>
+                                                                <Form.Group>
+                                                                    <BButton
+                                                                        variant="primary"
+                                                                        onClick={ handleSubmit }
+                                                                    >
+                                                                        Enviar
+                                                                    </BButton>
+                                                                </Form.Group>
+                                                            </Form>
+                                                        ) }
+                                                    </Formik>
+                                                </>
+                                            ) }
                                         </Col>
                                     </Row>
                                 </Container>
@@ -163,13 +196,36 @@ class DetalleAnuncio extends Component {
 const mapStateToProps = (state, ownProps) => {
     const id = ownProps.match.params.id
     const anuncios = state.firestore.data.anuncios
+    const misAnuncios = state.firebase.profile.anuncios || []
+
+    const miAnuncio = misAnuncios.some(a => a.id === id)
+
+    const uid = state.firebase.auth.uid
+    const user = state.firebase.profile
+    const currentUser = {
+        id: uid,
+        ...user
+    }
+
+    const misChats = state.firebase.profile.chats || []
+    const hasChat = misChats.some(c => c.anuncio.id === id)
+
     return {
-        anuncio: anuncios ? anuncios[id] : null
+        anuncio: anuncios ? anuncios[id] : null,
+        miAnuncio,
+        currentUser,
+        hasChat
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        crearChatMensaje: (payload) => dispatch(crearChatMensaje(payload))
     }
 }
 
 export default compose(
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([
         { collection: 'anuncios' }
     ])
