@@ -46,9 +46,7 @@ class Login extends Component {
             formik.setFieldError('email', 'Favor de ingresar un correo del ITESM')
         }
 
-        logIn(values, () => {
-            history.push('')
-        })
+        logIn(values)
 
     }
 

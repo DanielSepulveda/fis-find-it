@@ -106,7 +106,7 @@ class CardAnuncio extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const favorites = state.firebase.profile.favorites
+    const favorites = state.firebase.profile.favorites || {}
     const isFavorite = favorites[ownProps.anuncio.id] ? true : false
 
     return {
