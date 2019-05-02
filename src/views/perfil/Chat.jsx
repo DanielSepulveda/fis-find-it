@@ -38,6 +38,7 @@ const ChatContainer = styled.div`
     display: flex;
     flex-direction: column;
     padding: 16px;
+    overflow: auto;
     @media (min-width: 540px) {
         width: 500px;
     }
