@@ -12,6 +12,7 @@ import { object, string } from "yup"
 import Form from 'react-bootstrap/Form'
 import BButton from 'react-bootstrap/Button'
 import { withStyles } from '@material-ui/core/styles'
+import MUITypography from '@material-ui/core/Typography'
 
 import Main from '../layouts/Main'
 import { crearMensaje } from '../../store/actions/mensajes'
@@ -61,18 +62,23 @@ const SendContainer = styled.div`
 `
 
 const MessageWrapperLeft = styled.div`
-    display: flex;
+    display: grid;
     margin-top: 16px;
+    justify-content: flex-start;
 `
 
 const MessageWrapperRight = styled.div`
-    display: flex;
+    display: grid;
     justify-content: flex-end;
     margin-top: 16px;
 `
 
 const Message = styled(Paper)`
     padding: 2px 8px;
+`
+
+const Typography = styled(MUITypography)`
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !important;
 `
 
 const styles = () => ({
@@ -186,7 +192,11 @@ class Chat extends Component {
                                                     <Message
                                                         elevation={1}
                                                     >
-                                                        { m.content.message }
+                                                        <Typography
+                                                            gutterBottom
+                                                        >
+                                                            { m.content.message }
+                                                        </Typography>
                                                     </Message>
                                                 </MessageWrapperLeft>
                                             )
@@ -199,7 +209,11 @@ class Chat extends Component {
                                                         className={ classes.myMsg }
                                                         elevation={1}
                                                     >
-                                                        { m.content.message }
+                                                        <Typography
+                                                            gutterBottom
+                                                        >
+                                                            { m.content.message }
+                                                        </Typography>
                                                     </Message>
                                                 </MessageWrapperRight>
                                             )
