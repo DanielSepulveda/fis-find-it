@@ -1,6 +1,7 @@
 ## Find It
 
 Implementacion del proyecto final de FIS ENERO-MAYO 2019.
+
 Funciones principales de la aplicacion:
 
 ### `Login/Sign Up/Log Out`
@@ -25,5 +26,7 @@ Yarn
 ### Pasos
 
 Clonar proyecto
+
 Correr yarn en el directorio del proyecto clonado ("yarn")
+
 Correr "yarn start"
