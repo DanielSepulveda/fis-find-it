@@ -11,6 +11,7 @@ import { Formik } from "formik"
 import { object, string } from "yup"
 import Form from 'react-bootstrap/Form'
 import BButton from 'react-bootstrap/Button'
+import { withStyles } from '@material-ui/core/styles'
 
 import Main from '../layouts/Main'
 import { crearMensaje } from '../../store/actions/mensajes'
@@ -74,6 +75,12 @@ const Message = styled(Paper)`
     padding: 2px 8px;
 `
 
+const styles = () => ({
+    myMsg: {
+        backgroundColor: '#dcedc8'
+    }
+})
+
 const schema = object({
     message: string()
         .required("Favor de ingresar un mensaje")
@@ -135,7 +142,8 @@ class Chat extends Component {
         const {
             props: {
                 chat,
-                currentUser
+                currentUser,
+                classes
             },
             _handleGoBack,
             _handleSubmit,
@@ -188,6 +196,7 @@ class Chat extends Component {
                                                     key={ index }
                                                 >
                                                     <Message
+                                                        className={ classes.myMsg }
                                                         elevation={1}
                                                     >
                                                         { m.content.message }
@@ -284,5 +293,6 @@ export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([
         { collection: 'chats' }
-    ])
+    ]),
+    withStyles(styles)
 )(Chat)
