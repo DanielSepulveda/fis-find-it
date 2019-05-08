@@ -47,6 +47,7 @@ export const crearAnuncio = ({ image, ...restPayload }, callback) => {
 }
 
 export const favoriteAnuncio = ({ id }) => {
+    console.log(id)
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const state = getState()
         const firestore = getFirestore()
@@ -54,14 +55,13 @@ export const favoriteAnuncio = ({ id }) => {
         const uid = state.firebase.auth.uid
         const anuncio = state.firestore.data.anuncios[id]
 
-        firestore.collection('users').doc(uid).update({
-            favorites: {
-                [id]: {
-                    id,
-                    ...anuncio
-                }
-            }
-        }).then(() => {
+        const favoritesUpdate = {}
+        favoritesUpdate[`favorites.${id}`] = {
+            id,
+            ...anuncio
+        }
+
+        firestore.collection('users').doc(uid).update(favoritesUpdate).then(() => {
             return dispatch({
                 type: FAVORITE_SUCCESS
             })
